@@ -4,7 +4,7 @@ const app = express();
 const bodyparser = require('body-parser')
 const PORT = 8080;
 const morgan = require('morgan');
-const router = require("./api.js")
+const router = require("./api")
 module.exports = app;
 
 app.use(morgan('dev'))
