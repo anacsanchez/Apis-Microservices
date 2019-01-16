@@ -19,6 +19,6 @@ app.get('*', (req,res,next) => {
   res.sendFile(path.join(__dirname, '../index.html'))
 })
 
-app.set('trust proxy', 'loopback')
+app.set('trust proxy', true)
 
 app.listen(PORT, () => 'Listening on port' + PORT)
