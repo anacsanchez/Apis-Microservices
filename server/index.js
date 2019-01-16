@@ -13,10 +13,12 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended: "true"}))
 app.use('/api', router)
 
-app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, '..')))
 
 app.get('*', (req,res,next) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(path.join(__dirname, '../index.html'))
 })
+
+app.set('trust proxy', 'loopback')
 
 app.listen(PORT, () => 'Listening on port' + PORT)
