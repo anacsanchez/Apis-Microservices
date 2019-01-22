@@ -4,7 +4,8 @@ const app = express();
 const bodyparser = require('body-parser')
 const PORT = 8080;
 const morgan = require('morgan');
-const router = require("./api")
+const router = require('./api')
+const db = require('./db')
 module.exports = app;
 
 app.use(morgan('dev'))
@@ -22,3 +23,5 @@ app.get('*', (req,res,next) => {
 app.set('trust proxy', true)
 
 app.listen(PORT, () => 'Listening on port' + PORT)
+
+db.sync({})
