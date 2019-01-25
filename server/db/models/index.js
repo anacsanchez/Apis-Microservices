@@ -1,5 +1,9 @@
-const URL = require('./url')
+const URL = require('./url');
+const User = require('./user');
+const Exercise = require('./exercise');
 
 module.exports = {
-  URL
+  URL,
+  User,
+  Exercise
 }
