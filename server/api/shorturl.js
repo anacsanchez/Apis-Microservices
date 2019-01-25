@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { URL } = require('../db/models')
 module.exports = router;
+const dns = require('dns');
 
 router.get('/:id', (req,res) => {
   URL.findById(req.params.id)
@@ -10,11 +11,16 @@ router.get('/:id', (req,res) => {
 
 router.post('/new', (req,res) => {
   if (req.body.url) {
-    URL.create({ original: req.body.url })
-    .then(newUrl => res.send({"original_url": newUrl.original, "short_url": newUrl.id }))
-    .catch(err => console.log(err))
-  }
-  else {
-    res.end()
+    dns.lookup(req.body.url.replace(/(http:\/\/)|(https:\/\/)/, ""), (err, address) => {
+      if (err) {
+        console.log("error", err, "address", address)
+        res.end()
+      }
+      else {
+        URL.create({ original: req.body.url })
+        .then(newUrl => res.send({"original_url": newUrl.original, "short_url": newUrl.id }))
+        .catch(error => console.log(error))
+      }
+    })
   }
 })
