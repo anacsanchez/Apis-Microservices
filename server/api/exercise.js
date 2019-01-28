@@ -7,12 +7,7 @@ router.get('/users', (req,res) => {
   .catch(err => res.send(err))
 })
 
-router.get('/log?', (req,res) => {
-  const data = req.url.slice(req.path.length + 1).split('&')
-  res.end();
-})
-
-router.post('/new-user', (req,res) => {
+router.post('/users', (req,res) => {
   if(req.body.username) {
     User.create({username: req.body.username})
     .then(user => res.send({username: user.username, _id: user.id }))
@@ -23,20 +18,22 @@ router.post('/new-user', (req,res) => {
   }
 })
 
-router.post('/add', (req,res) => {
-  // if (req.body.userId) {
-    User.findById(req.body.userId)
+router.get('/users/:userId/exercises', (req,res) => {
+  Exercise.findAll({ where: { user_id: req.params.userId}})
+  .then(exercises => res.send(exercises))
+  .catch(err => res.send(err))
+})
+
+router.post('/users/:userId/exercises', (req,res) => {
+    User.findById(req.params.userId)
     .then(user => {
       Exercise.create({
-        user_id: user.id,
         description: req.body.description,
         duration: req.body.duration,
         date: req.body.date || null
       })
-      return user;
+      .then(exercise => user.add(exercise.id))
+      .catch(err => res.send(err))
     })
-    .then(user => user.reload())
-    .then(user => res.send(user))
     .catch(err => res.send(err))
-  // }
 })
