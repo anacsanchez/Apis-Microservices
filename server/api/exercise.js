@@ -10,12 +10,16 @@ router.get('/log?', (req,res) => {
 router.post('/new-user', (req,res) => {
   if(req.body.username) {
     User.create({username: req.body.username})
-    .then(user => console.log(`${user.username} created successfully!`))
+    .then(user => res.send({username: user.username, _id: user.id }))
     .catch(err => console.log(err))
   }
-  res.end();
+  else {
+    res.end();
+  }
 })
 
 router.post('/add', (req,res) => {
+  if (req.body.username) {
 
+  }
 })
